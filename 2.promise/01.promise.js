@@ -4,7 +4,7 @@
 // 成功态和失败态 不能相互转化
 // excutor函数 而且会立即执行，参数是resolve函数 reject函数
 // 每个promise实例都有一个then方法
-const Promise = require('./base-promise');
+const Promise = require('./01.base-promise');
 const promise = new Promise(function (resolve, reject) {
 	console.log('promise立即执行');
 	setTimeout(() => {
