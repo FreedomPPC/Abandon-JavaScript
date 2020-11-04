@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><title>1. 2020年03期在线JS高级（第一周作业）</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h4 id="1-2020年03期在线js高级第一周作业">1. 2020年03期在线JS高级（第一周作业）</h4>
+
+<ol><li rel="1"><p>请阐述“队列结构”和“栈”结构的区别？</p></li>
+<li rel="2"><p>请阐述你对重排和重绘的理解？以及如何优化DOM操作？</p></li>
+<li rel="3"><p>如何解决“页面加载白屏”的问题？</p></li>
+<li rel="4"><p>下面代码输出的结果和原因</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">func1</span>(<span class="hljs-params"></span>)</span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'func1 start'</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span>=&gt;</span>{
+</div><div class="hljs-line">        resolve(<span class="hljs-string">'OK'</span>);
+</div><div class="hljs-line">    });
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">func2</span>(<span class="hljs-params"></span>)</span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'func2 start'</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span>=&gt;</span>{
+</div><div class="hljs-line">        setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span>{
+</div><div class="hljs-line">            resolve(<span class="hljs-string">'OK'</span>);
+</div><div class="hljs-line">        },<span class="hljs-number">10</span>);
+</div><div class="hljs-line">    });
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-number">1</span>);
+</div><div class="hljs-line">setTimeout(<span class="hljs-keyword">async</span> () =&gt; {
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-number">2</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">await</span> func1();
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-number">3</span>);
+</div><div class="hljs-line">}, <span class="hljs-number">20</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">90000000</span>; i++) {} <span class="hljs-comment">//循环大约要进行80MS左右</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-number">4</span>);
+</div><div class="hljs-line">func1().then(<span class="hljs-function"><span class="hljs-params">result</span>=&gt;</span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-number">5</span>);
+</div><div class="hljs-line">});
+</div><div class="hljs-line">func2().then(<span class="hljs-function"><span class="hljs-params">result</span>=&gt;</span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-number">6</span>);
+</div><div class="hljs-line">});
+</div><div class="hljs-line">setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-number">7</span>);
+</div><div class="hljs-line">}, <span class="hljs-number">0</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-number">8</span>);
+</div></code></pre>
+
+<ol start="5"><li rel="5"><p>实现一个栈，要求实现 leave(出栈)、enter(入栈)、min(返回最小值) 三个方法，时间复杂度为O(1)</p></li>
+<li rel="6"><p>下面代码计算完成的结果</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> result = <span class="hljs-number">100</span> + <span class="hljs-literal">true</span> + <span class="hljs-number">21.2</span> + <span class="hljs-literal">null</span> + <span class="hljs-literal">undefined</span> + <span class="hljs-string">"Tencent"</span> + [] + <span class="hljs-literal">null</span> + <span class="hljs-number">9</span> + <span class="hljs-literal">false</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(result);
+</div></code></pre>
+
+<ol start="7"><li rel="7"><p>下面代码输出的结果</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">{}+<span class="hljs-number">0</span>?alert(<span class="hljs-string">'ok'</span>):alert(<span class="hljs-string">'no'</span>);
+</div><div class="hljs-line"><span class="hljs-number">0</span>+{}?alert(<span class="hljs-string">'ok'</span>):alert(<span class="hljs-string">'no'</span>);
+</div></code></pre>
+
+<ol start="8"><li rel="8"><p>下面代码输出的结果</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> res = <span class="hljs-built_in">Number</span>(<span class="hljs-string">'12px'</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">if</span>(res===<span class="hljs-number">12</span>){
+</div><div class="hljs-line">    alert(<span class="hljs-number">200</span>);
+</div><div class="hljs-line">}<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(res===<span class="hljs-literal">NaN</span>){
+</div><div class="hljs-line">    alert(<span class="hljs-literal">NaN</span>);
+</div><div class="hljs-line">}<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> res===<span class="hljs-string">'number'</span>){
+</div><div class="hljs-line">    alert(<span class="hljs-string">'number'</span>);
+</div><div class="hljs-line">}<span class="hljs-keyword">else</span>{
+</div><div class="hljs-line">    alert(<span class="hljs-string">'Invalid Number'</span>);
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p>扩展题：下面代码输出的结果</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">10.18</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">25</span>, <span class="hljs-number">23</span>];
+</div><div class="hljs-line">arr = arr.map(<span class="hljs-built_in">parseInt</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(arr);
+</div></code></pre></div></body></html>

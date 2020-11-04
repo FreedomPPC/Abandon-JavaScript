@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+        <title>浏览器渲染队列</title>
+        <!-- IMPORT CSS -->
+        <style>
+            .box {
+                position: absolute;
+                top: 100px;
+                left: 100px;
+                width: 100px;
+                height: 100px;
+                background: red;
+
+                transition: left 1s linear 0s;
+            }
+
+            /* 点击盒子，让其立即回到0的位置，然后再运动到200的位置（动画1S） */
+        </style>
+    </head>
+
+    <body>
+        <div class="box" id="box"></div>
+
+        <script>
+            // 这样写不行，因为渲染队列机制导致：四行代码最后是一起渲染的，这样以最后的为主
+            /* box.onclick = function () {
+			// 立即回到零
+			box.style.transitionDuration = '0s';
+			box.style.left = '0px';
+
+			// 运动到200的位置
+			box.style.transitionDuration = '1s';
+			box.style.left = '200px';
+		}; */
+
+            box.onclick = function () {
+                box.style.transitionDuration = '0s';
+                box.style.left = '0px';
+
+                // 获取样式，会立即刷新渲染队列
+                box.offsetLeft;
+
+                box.style.transitionDuration = '1s';
+                box.style.left = '200px';
+            };
+        </script>
+
+        <!-- IMPORT JS -->
+        <script>
+            // box.onclick = function () {
+            // 现代版浏览器，两行修改操作，只引发一次回流
+            // 浏览器的渲染队列机制：遇到修改样式的代码，浏览器没有立即渲染，而是先把他放到渲染队列中，继续看下面是否还是修改样式的，是的话继续放进去....（直到遇到获取元素样式的代码或者没有修改样式的代码了，则立即把队列中的样式统一进行渲染，最后只引发一次回流重绘）
+            // box.style.width = '200px';
+            // box.style.height = '200px';
+
+            // 这样会触发两次，一旦遇到获取样式的代码，需要先把之前队列中的样式进行渲染
+            // box.style.width = '200px';
+            // console.log(box.offsetWidth);
+            // box.style.height = '200px';
+
+            // 分离“读写“
+            // box.style.width = '200px';
+            // box.style.height = '200px';
+            // console.log(box.offsetWidth);
+            // };
+
+            /* let frg = document.createDocumentFragment();
+		for (let i = 0; i < 10; i++) {
+			let span = document.createElement('span');
+			span.innerHTML = i;
+			frg.appendChild(span);
+		}
+		document.body.appendChild(frg); */
+        </script>
+    </body>
+</html>
